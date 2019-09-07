@@ -62,9 +62,10 @@ public class ProductController {
                     break;
                 }
                 case "previous-button":{
-                    System.out.println(pageCurrent - STEP_PAGE);
+                    int start = pageCurrent - 1;
+                    pageCurrent = start >= 0 ? start : 0;
                     Page<Product> page = productService.findAll(
-                            PageRequest.of(pageCurrent = (pageCurrent - STEP_PAGE)>=0 ? pageCurrent : 0,
+                            PageRequest.of(pageCurrent,
                                     STEP_PAGE,
                                     Sort.by(Sort.Direction.ASC, "id")));
                     model.addAttribute("type", "page".toString());
@@ -72,11 +73,12 @@ public class ProductController {
                     break;
                 }
                 case "next-button":{
-                    System.out.println(pageCurrent + STEP_PAGE);
-                    int start = pageCurrent + STEP_PAGE;
-                    boolean bool = ((int)productService.count() > start);
+
+                    int start = pageCurrent + 1;
+                    boolean bool = ((int)productService.count()/STEP_PAGE > start);
+                    pageCurrent = bool ? start : pageCurrent;
                     Page<Product> page = productService.findAll(
-                            PageRequest.of(pageCurrent = bool ? start : pageCurrent,
+                            PageRequest.of(pageCurrent,
                                     STEP_PAGE,
                                     Sort.by(Sort.Direction.ASC, "id")));
                     model.addAttribute("type", "page".toString());
