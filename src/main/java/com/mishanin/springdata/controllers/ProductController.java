@@ -54,8 +54,8 @@ public class ProductController {
                 }
                 case "between-button":{
                     List<Product> product = productService.findBetweenCost(
-                            Integer.parseInt(request.getParameter("min-value")),
-                            Integer.parseInt(request.getParameter("max-value"))
+                            Integer.parseInt(request.getParameter("min-value").isEmpty() ? "0" : request.getParameter("min-value")),
+                            Integer.parseInt(request.getParameter("max-value").isEmpty() ? "0" : request.getParameter("max-value"))
                     );
                     model.addAttribute("type", "between".toString());
                     model.addAttribute("betweenproduct", product);
