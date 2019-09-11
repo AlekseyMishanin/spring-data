@@ -7,11 +7,14 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
+/**
+ * Класс инкапсулирует фильтр для списка объектов типа Product
+ * */
 public class FilterProduct {
 
-    private int min;
-    private int max ;
-    private boolean isActive;
+    private int min;            //минимальное значение
+    private int max ;           //максимальное значение
+    private boolean isActive;   //признак активности фильтра
 
     public FilterProduct(){
         min = 0;

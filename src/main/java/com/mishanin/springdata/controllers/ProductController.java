@@ -40,7 +40,7 @@ public class ProductController {
         List<Product> list;
         if(filterProduct.isActive()){
             list = productService.findBetweenCost(filterProduct.getMin(), filterProduct.getMax());
-            filterProduct.setActive(false);
+            filterProduct.clear();
         } else {
             Page<Product> page = productService.findAll(PageRequest.of(pageCurrent, STEP_PAGE, Sort.by(Sort.Direction.ASC, "id")));
             list = Lists.newArrayList(page.iterator());
