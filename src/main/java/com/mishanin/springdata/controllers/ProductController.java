@@ -1,6 +1,7 @@
 package com.mishanin.springdata.controllers;
 
 import com.google.common.collect.Lists;
+import com.mishanin.springdata.configs.FilterProduct;
 import com.mishanin.springdata.entities.Product;
 import com.mishanin.springdata.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,64 +13,71 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
-    private static final int STEP_PAGE = 5;
-    private Integer pageCurrent = 0;
+    private ProductService productService;      //ссылка на объект сервиса
+    private FilterProduct filterProduct;        //ссылка на объект фильтра для product
+    private static final int STEP_PAGE = 5;     //кол-во строк на одной странице
+    private Integer pageCurrent = 0;            //номер страницы
+
 
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
+    @Autowired
+    public void setFilterProduct(FilterProduct filterProduct) {this.filterProduct = filterProduct;}
+
+    @GetMapping("/")
     public String getProducts(Model model){
-        Page<Product> page = productService.findAll(PageRequest.of(pageCurrent, STEP_PAGE, Sort.by(Sort.Direction.ASC, "id")));
-        //List<Product> productList = productService.findAll();
-        model.addAttribute("products", Lists.newArrayList(page.iterator()));
+        List<Product> list;
+        if(filterProduct.isActive()){
+            list = productService.findBetweenCost(filterProduct.getMin(), filterProduct.getMax());
+            filterProduct.setActive(false);
+        } else {
+            Page<Product> page = productService.findAll(PageRequest.of(pageCurrent, STEP_PAGE, Sort.by(Sort.Direction.ASC, "id")));
+            list = Lists.newArrayList(page.iterator());
+        }
+        model.addAttribute("products", list);
+        model.addAttribute("today", Calendar.getInstance());
         return "product-all-list.html";
     }
 
     @GetMapping("/filter")
-    public String getFilteredProduct(Model model, HttpServletRequest request){
+    public String getFilteredProduct(HttpServletRequest request){
         Enumeration<String> enumeration = request.getParameterNames();
         while (enumeration.hasMoreElements()){
             switch (enumeration.nextElement()){
-                case "min-button":{
-                    Product product = productService.findMinCost();
-                    model.addAttribute("type", "min".toString());
-                    model.addAttribute("minproduct", product);
-                    break;
-                }
-                case "max-button":{
-                    Product product = productService.findMaxCost();
-                    model.addAttribute("type", "max".toString());
-                    model.addAttribute("maxproduct", product);
-                    break;
-                }
                 case "between-button":{
-                    List<Product> product = productService.findBetweenCost(
-                            Integer.parseInt(request.getParameter("min-value").isEmpty() ? "0" : request.getParameter("min-value")),
-                            Integer.parseInt(request.getParameter("max-value").isEmpty() ? "0" : request.getParameter("max-value"))
-                    );
-                    model.addAttribute("type", "between".toString());
-                    model.addAttribute("betweenproduct", product);
+
+                    //настраиваем нижнюю границу для фильтра
+                    if(request.getParameter("min-value").isEmpty()) {
+                        filterProduct.setMin(0);
+                    } else {
+                        filterProduct.setMin(Integer.parseInt(request.getParameter("min-value")));
+                    }
+
+                    //настраиваем верхнюю границу для фильтра
+                    if(request.getParameter("max-value").isEmpty()) {
+                        filterProduct.setMax(Integer.MAX_VALUE);
+                    } else {
+                        filterProduct.setMax(Integer.parseInt(request.getParameter("max-value")));
+                    }
+
+                    //переводим фильт в активное состояние
+                    filterProduct.setActive(true);
                     break;
                 }
                 case "previous-button":{
                     int start = pageCurrent - 1;
                     pageCurrent = start >= 0 ? start : 0;
-                    Page<Product> page = productService.findAll(
-                            PageRequest.of(pageCurrent,
-                                    STEP_PAGE,
-                                    Sort.by(Sort.Direction.ASC, "id")));
-                    model.addAttribute("type", "page".toString());
-                    model.addAttribute("pageproduct", Lists.newArrayList(page.iterator()));
                     break;
                 }
                 case "next-button":{
@@ -77,17 +85,29 @@ public class ProductController {
                     int start = pageCurrent + 1;
                     boolean bool = ((int)productService.count()/STEP_PAGE > start);
                     pageCurrent = bool ? start : pageCurrent;
-                    Page<Product> page = productService.findAll(
-                            PageRequest.of(pageCurrent,
-                                    STEP_PAGE,
-                                    Sort.by(Sort.Direction.ASC, "id")));
-                    model.addAttribute("type", "page".toString());
-                    model.addAttribute("pageproduct", Lists.newArrayList(page.iterator()));
                     break;
                 }
                 default:break;
             }
         }
-        return "product-filter-list.html";
+        return "redirect:/products/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editProduct(@PathVariable(value = "id") Long id, Model model){
+        Product product = productService.findById(id);
+        model.addAttribute("editproduct", product);
+        return "product-edit";
+    }
+
+    @PostMapping("/update")
+    public String returnProducts(@RequestParam(value = "cancel-button", required = false) String clBtn,
+                                 @RequestParam(value = "ok-button", required = false) String okBtn,
+                                 @ModelAttribute(value = "editproduct") Product product){
+        if(clBtn!=null){;}
+        if(okBtn!=null){
+            productService.update(product);
+        }
+        return "redirect:/products/";
     }
 }

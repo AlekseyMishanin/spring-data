@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-
 <body>
+    <div th:fragment="filter-button" th:object="${current_page}">
+        <form th:action="@{/products/filter}" method="get">
+            <fieldset>
+                <legend th:text="#{caption.page}"/>
+                <button type="submit" th:name="previous-button" th:text="#{caption.page.next}"/>
+                <button type="submit" th:name="next-button" th:text="#{caption.page.previous}"/>
+            </fieldset>
 
-<div th:fragment="filter-button">
-    <form th:action="@{/filter}" method="get">
-
-        <fieldset>
-            <legend>Page</legend>
-            <button type="submit" th:name="previous-button">previous</button>
-            <button type="submit" th:name="next-button">next</button>
-        </fieldset>
-
-        <button type="submit" name="min-button">min</button>
-        <button type="submit" name="max-button">max</button>
-        <fieldset>
-            <legend>Between</legend>
-            <label th:for="min-value">Min value</label>
-            <input th:name="min-value" type="number" th:min="0">
-            <label th:for="max-value">Max value</label>
-            <input th:name="max-value" type="number" th:min="0">
-            <button type="submit" th:name="between-button">between</button>
-        </fieldset>
-    </form>
-</div>
-
+            <fieldset>
+                <legend th:text="#{caption.filter}"/>
+                <label th:for="min-value" th:text="#{caption.filter.min}"/>
+                <input th:name="min-value" type="number" th:min="0">
+                <label th:for="max-value" th:text="#{caption.filter.max}"/>
+                <input th:name="max-value" type="number" th:min="0">
+                <button type="submit" th:name="between-button" th:text="#{caption.filter.button}"/>
+            </fieldset>
+        </form>
+    </div>
 </body>
-
 </html>
