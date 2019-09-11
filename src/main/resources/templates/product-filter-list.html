@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+        <div th:switch="${type}">
+            <tr th:case="'min'">
+                <th scope="row" th:text="${minproduct.id}"/>
+                <td th:text="${minproduct.name}"/>
+                <td th:text="${minproduct.cost}"/>
+            </tr>
+            <tr th:case="'max'">
+                <th scope="row" th:text="${maxproduct.id}"/>
+                <td th:text="${maxproduct.name}"/>
+                <td th:text="${maxproduct.cost}"/>
+            </tr>
+            <div th:case="'between'">
+                <tr  th:each="prod : ${betweenproduct}">
+                    <th scope="row" th:text="${prod.id}"/>
+                <td th:text="${prod.name}"/>
+                <td th:text="${prod.cost}"/>
+                </tr>
+            </div>
+            <div th:case="'page'">
+                <tr  th:each="prod : ${pageproduct}">
+                    <th scope="row" th:text="${prod.id}"/>
+                    <td th:text="${prod.name}"/>
+                    <td th:text="${prod.cost}"/>
+                </tr>
+            </div>
+        </div>
+    </tbody>
+</table>
+
+<div th:insert="~{form-buttons :: filter-button}"></div>
+
+</body>
+</html>

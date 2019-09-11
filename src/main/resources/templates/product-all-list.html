@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prod : ${products}">
+        <th scope="row" th:text="${prod.id}"/>
+        <td th:text="${prod.name}"/>
+        <td th:text="${prod.cost}"/>
+    </tr>
+    </tbody>
+
+</table>
+
+
+<div th:insert="~{form-buttons :: filter-button}"></div>
+</body>
+</html>
