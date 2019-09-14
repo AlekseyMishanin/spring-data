@@ -22,9 +22,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> findAll(){
-        return productRepository.findAll();
-    }
+    public List<Product> findAll(){ return productRepository.findAll(); }
 
     @Transactional(readOnly = true)
     public Page<Product> findAll(PageRequest pageRequest){
@@ -36,11 +34,19 @@ public class ProductService {
         return productRepository.count();
     }
 
-
+    @Transactional(readOnly = true)
     public Product findMinCost(){ return  productRepository.findProductByCostIsMin();}
 
+    @Transactional(readOnly = true)
     public Product findMaxCost(){ return  productRepository.findProductByCostIsMax();}
 
+    @Transactional(readOnly = true)
     public List<Product> findBetweenCost(int min, int max){ return productRepository.findProductsByCostBetween(min, max);}
+
+    @Transactional(readOnly = true)
+    public Product findById(Long id){ return productRepository.findById(id).get();}
+
+    @Transactional
+    public void update(Product product){ productRepository.save(product);}
 
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Edit product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="containerEdit">
+        <form th:action="@{/products/update}" th:object="${editproduct}" th:method="post">
+            <fieldset>
+                <legend th:text="#{caption.edit.product.legend} + ' ' + ${editproduct.name}"></legend>
+                <input th:field="*{id}" type="hidden">
+                <div class="fieldsBox">
+                    <label th:text="#{caption.edit.product.name}" th:for="nameProd"></label>
+                    <input th:name="nameProd" th:type="text" th:value="*{name}" th:field="*{name}"/>
+                </div>
+                <div class="fieldsBox">
+                    <label th:text="#{caption.edit.product.cost}" th:for="costProd"></label>
+                    <input th:name="costProd" th:type="number" th:min="0" th:value="*{cost}" th:field="*{cost}"/>
+                </div>
+                <div class="buttonsBox">
+                    <button type="submit" th:name="ok-button" th:text="#{caption.edit.product.ok}"/>
+                    <button type="submit" th:name="cancel-button" th:text="#{caption.edit.product.cancel}"/>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

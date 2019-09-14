@@ -1,34 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>App</title>
+    <title>List products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+Established locale country: <span th:text="${#locale.country}">US</span>
+<br>
+<span th:text="${#ctx.String}"/>
+<br>
+<span th:text="${#request.getContextPath()}"/>
+<br>
+<a href="index.html" th:href="@{/products}"><span th:text="@{'/products/'+${#ctx.String}(idParam=${#locale.country})}"/></a>
+<br>
+<p>In two years, it will be <span th:text="2013 + 2">1494</span>.</p>
+<p><span th:text="${today}? 'first' : 'even'"> ... </span> </p>
+<p>Age: <span th:text="*{nul}?: '(no age specified)'">27</span></p>
+
+Today <span th:text="${#calendars.format(today,'dd mm yyyy')}"/>
+
 <table class="table table-dark">
     <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Cost</th>
-    </tr>
+        <tr>
+            <th scope="col" th:text="#{column.number}"/>
+            <th scope="col" th:text="#{column.name}"/>
+            <th scope="col" th:text="#{column.cost}"/>
+            <th scope="col" th:text="#{column.action}"/>
+        </tr>
     </thead>
     <tbody>
-    <tr th:each="prod : ${products}">
-        <th scope="row" th:text="${prod.id}"/>
-        <td th:text="${prod.name}"/>
-        <td th:text="${prod.cost}"/>
-    </tr>
+        <tr th:each="prod : ${products}">
+            <th:block th:object="${prod}">
+                <th scope="row" th:text="*{id}"/>
+                <td th:text="${#object.name}"/>
+                <td th:text="*{cost}"/>
+                <td>
+                    <a th:text="#{caption.link.edit.product}" th:href="@{'/products/edit/' + ${#object.id}}"/>
+                </td>
+            </th:block>
+        </tr>
     </tbody>
-
 </table>
-
 
 <div th:insert="~{form-buttons :: filter-button}"></div>
 </body>

@@ -1,0 +1,39 @@
+.containerEdit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.containerEdit form fieldset legend {
+    font-weight: bold;
+    font-size: 3em;
+    text-align: center;
+    padding: 25px 10px;
+}
+
+.fieldsBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: brown;
+    margin: 30px 20px;
+}
+
+.fieldsBox input {
+    margin-left: 15px;
+}
+
+.buttonsBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: black 2px solid;
+    border-radius: 3em;
+    background: gold;
+    margin: 1em;
+}
+
+.buttonsBox button {
+    margin: 15px;
+}
