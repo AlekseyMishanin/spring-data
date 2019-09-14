@@ -10,19 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 </head>
-Established locale country: <span th:text="${#locale.country}">US</span>
-<br>
-<span th:text="${#ctx.String}"/>
-<br>
-<span th:text="${#request.getContextPath()}"/>
-<br>
-<a href="index.html" th:href="@{/products}"><span th:text="@{'/products/'+${#ctx.String}(idParam=${#locale.country})}"/></a>
-<br>
-<p>In two years, it will be <span th:text="2013 + 2">1494</span>.</p>
-<p><span th:text="${today}? 'first' : 'even'"> ... </span> </p>
-<p>Age: <span th:text="*{nul}?: '(no age specified)'">27</span></p>
-
-Today <span th:text="${#calendars.format(today,'dd mm yyyy')}"/>
+<body>
 
 <table class="table table-dark">
     <thead>
@@ -34,11 +22,11 @@ Today <span th:text="${#calendars.format(today,'dd mm yyyy')}"/>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="prod : ${products}">
+        <tr th:each="prod : ${page.getContent()}">
             <th:block th:object="${prod}">
                 <th scope="row" th:text="*{id}"/>
-                <td th:text="${#object.name}"/>
-                <td th:text="*{cost}"/>
+                <td th:text="${#object.title}"/>
+                <td th:text="*{price}"/>
                 <td>
                     <a th:text="#{caption.link.edit.product}" th:href="@{'/products/edit/' + ${#object.id}}"/>
                 </td>
@@ -47,6 +35,10 @@ Today <span th:text="${#calendars.format(today,'dd mm yyyy')}"/>
     </tbody>
 </table>
 
-<div th:insert="~{form-buttons :: filter-button}"></div>
+<a th:text="${'Add product'}" th:href="@{'/products/add'}"/>
+
+
+<div th:insert="~{pagination :: pagination}"></div>
+<div th:insert="~{filter-form :: filter-form}"></div>
 </body>
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="filter-form">
+        <form th:action="@{/products/}" method="get" th:object="${filters}">
+            <fieldset>
+                <legend th:text="#{caption.filter}"/>
+                <label th:for="word" th:text="#{caption.filter.title}"/>
+                <input th:value="${word != null} ? ${word}" th:name="word" type="text" th:placeholder="#{caption.filter.title.placeholder}">
+                <label th:for="min" th:text="#{caption.filter.min}"/>
+                <input th:value="${min != null} ? ${min}" th:name="min" type="number" th:min="0" th:placeholder="#{caption.filter.min.placeholder}">
+                <label th:for="max" th:text="#{caption.filter.max}"/>
+                <input th:value="${max != null} ? ${max}" th:name="max" type="number" th:min="0" th:placeholder="#{caption.filter.max.placeholder}">
+                <label th:for="sizePage" th:text="#{caption.filter.sizepage}"/>
+                <input th:value="${sizePage != null} ? ${sizePage}" th:name="sizePage" type="number" th:min="1">
+                <button type="submit" th:name="filter-button" th:text="#{caption.filter.button}"/>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>
