@@ -14,15 +14,15 @@
     <div class="containerEdit">
         <form th:action="@{/products/update}" th:object="${editproduct}" th:method="post">
             <fieldset>
-                <legend th:text="#{caption.edit.product.legend} + ' ' + ${editproduct.name}"></legend>
+                <legend th:text="*{id} ? #{caption.edit.product.legend.edit} + ' ' + ${editproduct.title} : #{caption.edit.product.legend.add}"></legend>
                 <input th:field="*{id}" type="hidden">
                 <div class="fieldsBox">
                     <label th:text="#{caption.edit.product.name}" th:for="nameProd"></label>
-                    <input th:name="nameProd" th:type="text" th:value="*{name}" th:field="*{name}"/>
+                    <input th:name="nameProd" th:type="text" th:value="*{title}" th:field="*{title}"/>
                 </div>
                 <div class="fieldsBox">
                     <label th:text="#{caption.edit.product.cost}" th:for="costProd"></label>
-                    <input th:name="costProd" th:type="number" th:min="0" th:value="*{cost}" th:field="*{cost}"/>
+                    <input th:name="costProd" th:type="number" th:min="0" th:value="*{price}" th:field="*{price}"/>
                 </div>
                 <div class="buttonsBox">
                     <button type="submit" th:name="ok-button" th:text="#{caption.edit.product.ok}"/>

@@ -1,15 +1,15 @@
 package com.mishanin.springdata.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "product")
+@NoArgsConstructor
+@Table(name = "products")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 3059323039068959973L;
@@ -19,17 +19,9 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "`name`", nullable = false)
-    private String name;
+    @Column(name = "`title`", nullable = false)
+    private String title;
 
-    @Column(name = "`cost`")
-    private int cost;
-
-    public Product() {
-    }
-
-    public Product(String name, int cost) {
-        this.name = name;
-        this.cost = cost;
-    }
+    @Column(name = "`price`")
+    private int price;
 }
