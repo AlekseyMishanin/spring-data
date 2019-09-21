@@ -2,8 +2,8 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="filter-form">
-        <form th:action="@{/products/}" method="get" th:object="${filters}">
+    <div th:fragment="filter-form(pathTo)">
+        <form th:action="@{'/' + ${pathTo}}" method="get" th:object="${filters}">
             <fieldset>
                 <legend th:text="#{caption.filter}"/>
                 <label th:for="word" th:text="#{caption.filter.title}"/>
