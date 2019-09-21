@@ -49,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String editProduct(@PathVariable(value = "id") Long id, Model model){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).get();
         model.addAttribute("editproduct", product);
         return "product-edit";
     }

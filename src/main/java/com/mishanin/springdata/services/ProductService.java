@@ -1,6 +1,7 @@
 package com.mishanin.springdata.services;
 
 import com.mishanin.springdata.entities.Product;
+import com.mishanin.springdata.errors.ProductNotFoundExceprion;
 import com.mishanin.springdata.repositories.ProductRepository;
 import com.mishanin.springdata.repositories.specifications.ProductSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 @Service("productService")
@@ -27,8 +30,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findAll(PageRequest pageRequest){
-        return productRepository.findAll(pageRequest);
+    public Optional<List<Product>> findAll(){
+        return Optional.of(productRepository.findAll());
     }
 
     @Transactional(readOnly = true)
@@ -37,10 +40,16 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Product findById(Long id){ return productRepository.findById(id).get();}
+    public Optional<Product> findById(Long id){ return productRepository.findById(id);}
 
     @Transactional
     public void update(Product product){ productRepository.save(product);}
+
+    @Transactional
+    public Product save(Product product){ return productRepository.save(product);}
+
+    @Transactional
+    public void deleteById(Long id){ productRepository.delete(productRepository.findById(id).orElseThrow(()-> new ProductNotFoundExceprion("Product not found (ID: " + id + ")")));}
 
     @Transactional(readOnly = true)
     public Model processing( Model model,
