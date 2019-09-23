@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="prod : ${page.getContent()}">
+        <tr th:each="prod : ${filters.getPageProduct().getContent()}">
             <th:block th:object="${prod}">
                 <th scope="row" th:text="*{id}"/>
                 <td th:text="${#object.title}"/>

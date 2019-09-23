@@ -20,7 +20,7 @@ public class Cart {
     public void init(){
         pr = new GroupProduct();
     }
-
+    
     public void addProduct(Product product){
         pr.addProduct(product);
     }

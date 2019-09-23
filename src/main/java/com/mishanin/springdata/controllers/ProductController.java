@@ -18,33 +18,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @GetMapping("")
-//    public String getProducts(Model model,
-//                              @RequestParam(name = "word", required = false) String word,
-//                              @RequestParam(name = "min", required = false) Integer min,
-//                              @RequestParam(name = "max", required = false) Integer max,
-//                              @RequestParam(name = "pageCurrent", required = false) Integer pageCurrent,
-//                              @RequestParam(name = "sizePage", required = false) Integer sizePage
-//                             // @RequestParam(name = "filters", required = false) HashMap<String,String> filters
-//    ){
-//
-//
-//        productService.processing(model,
-//                word,
-//                min,
-//                max,
-//                pageCurrent,
-//                sizePage);
-//        /*
-//        productService.processing(model,
-//                word,
-//                min,
-//                max,
-//                pageCurrent,
-//                sizePage,filters);*/
-//        return "product-all-list.html";
-//    }
-
     @GetMapping("/edit/{id}")
     public String editProduct(@PathVariable(value = "id") Long id, Model model){
         Product product = productService.findById(id).get();
