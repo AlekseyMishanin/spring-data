@@ -31,6 +31,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+			<version>3.0.3.RELEASE</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,13 +83,13 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>6.0.1</version>
 				<configuration>
-					<!--<configFile>src/main/resources/flyway.conf</configFile>
+					<!--<configFile>src/main/resources/flyway.conf</configFile>-->
                     <url>jdbc:postgresql://localhost:5432/postgres?currentSchema=september_market</url>
 					<schemas>
 						<schema>september_market</schema>
 					</schemas>
                     <user>postgres</user>
-					<password></password>-->
+					<password>Vjcrdf3332!</password>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -12,19 +12,19 @@
 <nav aria-label="Page navigation example" th:fragment="pagination">
     <ul class="pagination justify-content-center">
 
-        <th:block th:object="${filters}">
-        <th:block th:object="${page}">
 
-            <li th:class="page-item" th:classappend="${page.getNumber() <= 0 ? 'disabled' : ''}">
-                <a th:class="page-link" th:text="#{caption.page.previous}" th:href="@{'/products?pageCurrent=' + ${#object.getNumber()}}"/>
+        <th:block th:object="${filters.getPageProduct()}">
+
+            <li th:class="page-item" th:classappend="${filters.getPageProduct().getNumber() <= 0 ? 'disabled' : ''}">
+                <a th:class="page-link" th:text="#{caption.page.previous}" th:href="@{'/shop?pageCurrent=' + ${#object.getNumber()}}"/>
             </li>
-            <li th:class="page-item" th:each="i : ${#numbers.sequence(1,page.getTotalPages())}" th:classappend="${page.getNumber()+1 == i ? 'active' : ''}">
-                <a th:class="page-link" th:text="${i}" th:href="@{'/products?pageCurrent=' + ${i}}"/>
+            <li th:class="page-item" th:each="i : ${#numbers.sequence(1,#object.getTotalPages())}" th:classappend="${#object.getNumber()+1 == i ? 'active' : ''}">
+                <a th:class="page-link" th:text="${i}" th:href="@{'/shop?pageCurrent=' + ${i}}"/>
             </li>
-            <li th:class="page-item" th:classappend="${(page.getNumber() + 1) >= page.getTotalPages() ? 'disabled' : ''}">
-                <a th:class="page-link" th:text="#{caption.page.next}" th:href="@{'/products?pageCurrent=' + ${page.getNumber()+2}}"/>
+            <li th:class="page-item" th:classappend="${(#object.getNumber() + 1) >= #object.getTotalPages() ? 'disabled' : ''}">
+                <a th:class="page-link" th:text="#{caption.page.next}" th:href="@{'/shop?pageCurrent=' + ${#object.getNumber()+2}}"/>
             </li>
-        </th:block></th:block>
+        </th:block>
     </ul>
 </nav>
 </body>

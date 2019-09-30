@@ -24,23 +24,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="prod : ${page.getContent()}">
+        <tr th:each="prod : ${filters.getPageProduct().getContent()}">
             <th:block th:object="${prod}">
                 <th scope="row" th:text="*{id}"/>
                 <td th:text="${#object.title}"/>
                 <td th:text="*{price}"/>
                 <td>
-                    <a th:text="#{caption.link.edit.product}" th:href="@{'/products/edit/' + ${#object.id}}"/>
+                    <a th:text="#{caption.cart.add.product}" th:href="@{'/cart/add?id=' + ${#object.id}}"/>
                 </td>
             </th:block>
         </tr>
     </tbody>
 </table>
 
-<a th:text="${'Add product'}" th:href="@{'/products/add'}"/>
-
-
 <div th:insert="~{pagination :: pagination}"></div>
-<div th:insert="~{filter-form :: filter-form('products')}"></div>
+<div th:insert="~{filter-form :: filter-form('shop')}"></div>
 </body>
 </html>

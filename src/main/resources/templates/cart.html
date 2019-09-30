@@ -12,35 +12,38 @@
 </head>
 <body>
 
-<div th:replace="~{navigation :: navigation('Shop')}"/>
+<div th:replace="~{navigation :: navigation('Cart')}"/>
 
 <table class="table table-dark">
     <thead>
         <tr>
-            <th scope="col" th:text="#{column.number}"/>
             <th scope="col" th:text="#{column.name}"/>
+            <th scope="col" th:text="#{column.count}"/>
             <th scope="col" th:text="#{column.cost}"/>
             <th scope="col" th:text="#{column.action}"/>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="prod : ${page.getContent()}">
+        <tr th:each="prod : ${products.getProducts()}">
             <th:block th:object="${prod}">
-                <th scope="row" th:text="*{id}"/>
-                <td th:text="${#object.title}"/>
-                <td th:text="*{price}"/>
+                <th th:text="*{getKey().getTitle()}"/>
                 <td>
-                    <a th:text="#{caption.link.edit.product}" th:href="@{'/products/edit/' + ${#object.id}}"/>
+                    <a th:href="@{'/cart/delete?id=' + ${#object.getKey().getId()}}" th:text="'-'"/>
+                     <span th:text="${#object.getValue()}"/>
+                    <a th:href="@{'/cart/add?id=' + ${#object.getKey().getId()}}" th:text="'+'"/>
                 </td>
+                <td th:text="${prod.getKey().getPrice()} * *{getValue()}" />
             </th:block>
         </tr>
     </tbody>
 </table>
 
-<a th:text="${'Add product'}" th:href="@{'/products/add'}"/>
+<div>
+    Итого к оплате - <span th:text="${products.getTotalCost()}"/> руб.
+</div>
+<div>
+    <a th:text="'Оформить заказ'" th:href="@{'/order/add'}"></a>
+</div>
 
-
-<div th:insert="~{pagination :: pagination}"></div>
-<div th:insert="~{filter-form :: filter-form('products')}"></div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.mishanin.springdata.entities.Product;
 import com.mishanin.springdata.errors.ProductNotFoundExceprion;
 import com.mishanin.springdata.repositories.ProductRepository;
 import com.mishanin.springdata.repositories.specifications.ProductSpecifications;
+import com.mishanin.springdata.utils.Filters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,21 +13,24 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 @Service("productService")
 public class ProductService {
 
     private ProductRepository productRepository;
+    private Filters filters;
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Autowired
+    public void setFilters(Filters filters) {
+        this.filters = filters;
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +56,7 @@ public class ProductService {
     public void deleteById(Long id){ productRepository.delete(productRepository.findById(id).orElseThrow(()-> new ProductNotFoundExceprion("Product not found (ID: " + id + ")")));}
 
     @Transactional(readOnly = true)
-    public Model processing( Model model,
+    public void processing(// Model model,
                             String word,
                             Integer min,
                             Integer max,
@@ -60,61 +64,34 @@ public class ProductService {
                             Integer sizePage){
         Specification<Product> spec = Specification.where(null);
         if(word != null) {
-            spec = spec.and(ProductSpecifications.titleContains(word));
+            filters.setWord(word);
+        }
+
+        if (filters.getWord() != null){
+            spec = spec.and(ProductSpecifications.titleContains(filters.getWord()));
         }
         if(min != null) {
-            spec = spec.and(ProductSpecifications.priceGreaterThanOrEq(min));
+            filters.setMin(min.toString());
+        }
+        if(filters.getMin() != null){
+            spec = spec.and(ProductSpecifications.priceGreaterThanOrEq(Integer.valueOf(filters.getMin())));
         }
         if(max != null) {
-            spec = spec.and(ProductSpecifications.priceLesserThanOrEq(max));
+            filters.setMax(max.toString());
         }
-        if(pageCurrent == null) { pageCurrent = 1; }
-        if(sizePage == null) { sizePage = 2; }
-        model.addAttribute("page", findAll(spec,PageRequest.of(pageCurrent-1,sizePage, Sort.by(Sort.Direction.ASC, "id"))));
-        model.addAttribute("word",word);
-        model.addAttribute("min",min);
-        model.addAttribute("max",max);
-        model.addAttribute("pageCurrent",pageCurrent);
-        model.addAttribute("sizePage", sizePage);
-        return model;
-    }
+        if(filters.getMax() != null){
+            spec = spec.and(ProductSpecifications.priceLesserThanOrEq(Integer.valueOf(filters.getMax())));
+        }
+        if(filters.getPageCurrent()==null && pageCurrent == null) { pageCurrent = 1; }
+        if(filters.getSizePage()==null && sizePage == null) { sizePage = 2; }
 
-/*
-    @Transactional(readOnly = true)
-    public Model processing(Model model,
-                            String word,
-                            Integer min,
-                            Integer max,
-                            Integer pageCurrent,
-                            Integer sizePage,
-                            HashMap<String,String> filters){
-        if (filters == null) {filters = new HashMap<>();}
-        if(word != null) filters.put("word",word);
-        if(min != null) filters.put("min",Integer.toString(min));
-        if(max != null) filters.put("max",Integer.toString(max));
-        if(pageCurrent != null) filters.put("pageCurrent",Integer.toString(pageCurrent));
-        if(sizePage != null) filters.put("sizePage",Integer.toString(sizePage));
+        if(pageCurrent != null) { filters.setPageCurrent(pageCurrent.toString()); }
+        if(sizePage != null) { filters.setSizePage(sizePage.toString()); filters.setPageCurrent("1");}
 
-        Specification<Product> spec = Specification.where(null);
-        if(filters.get("word")!=null && !filters.get("word").isEmpty()) {
-            spec = spec.and(ProductSpecifications.titleContains((String) filters.get("word")));
-        }
-        if(filters.get("min")!=null && !filters.get("min").isEmpty()) {
-            spec = spec.and(ProductSpecifications.priceGreaterThanOrEq(Integer.parseInt(filters.get("min"))));
-        }
-        if(filters.get("max")!=null && !filters.get("max").isEmpty()) {
-            spec = spec.and(ProductSpecifications.priceLesserThanOrEq(Integer.parseInt(filters.get("max"))));
-        }
-        if(filters.get("pageCurrent")==null || filters.get("pageCurrent").isEmpty()) { filters.put("pageCurrent", "1");  }
-        if(filters.get("sizePage")==null || filters.get("sizePage").isEmpty()) { filters.put("sizePage", "2"); }
-        System.out.println(filters);
-        model.addAttribute("page", findAll(spec,PageRequest.of(
-                Integer.parseInt(filters.get("pageCurrent"))-1,
-                Integer.parseInt(filters.get("sizePage")),
+        filters.setPageProduct(findAll(spec,PageRequest.of(
+                Integer.valueOf(filters.getPageCurrent())-1,
+                Integer.valueOf(filters.getSizePage()),
                 Sort.by(Sort.Direction.ASC, "id"))));
-        model.addAttribute("filters", filters);
-        return model;
-    }*/
 
-
+    }
 }
