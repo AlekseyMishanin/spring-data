@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>List products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
@@ -13,37 +14,49 @@
 <body>
 
 <div th:replace="~{navigation :: navigation('Cart')}"/>
+<th:block th:if="${products.getOrderDetails().size()>0}">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col" th:text="#{column.name}"/>
+                <th scope="col" th:text="#{column.count}"/>
+                <th scope="col" th:text="#{column.cost}"/>
+                <th scope="col" th:text="#{column.action}"/>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prod : ${products.getOrderDetails()}">
+                <th:block th:object="${prod}">
+                    <th th:text="*{getValue().getProduct().getTitle()}"/>
+                    <td>
+                        <a th:href="@{'/cart/delete?id=' + ${#object.getKey()}}" th:text="'-'"/>
+                         <span th:text="${#object.getValue().getProduct().getTitle()}"/>
+                        <a th:href="@{'/cart/add?id=' + ${#object.getKey()}}" th:text="'+'"/>
+                    </td>
+                    <td th:text="${prod.getValue().getGroupPrice()}" />
+                </th:block>
+            </tr>
+        </tbody>
+    </table>
 
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th scope="col" th:text="#{column.name}"/>
-            <th scope="col" th:text="#{column.count}"/>
-            <th scope="col" th:text="#{column.cost}"/>
-            <th scope="col" th:text="#{column.action}"/>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="prod : ${products.getProducts()}">
-            <th:block th:object="${prod}">
-                <th th:text="*{getKey().getTitle()}"/>
-                <td>
-                    <a th:href="@{'/cart/delete?id=' + ${#object.getKey().getId()}}" th:text="'-'"/>
-                     <span th:text="${#object.getValue()}"/>
-                    <a th:href="@{'/cart/add?id=' + ${#object.getKey().getId()}}" th:text="'+'"/>
-                </td>
-                <td th:text="${prod.getKey().getPrice()} * *{getValue()}" />
-            </th:block>
-        </tr>
-    </tbody>
-</table>
-
-<div>
-    Итого к оплате - <span th:text="${products.getTotalCost()}"/> руб.
-</div>
-<div>
-    <a th:text="'Оформить заказ'" th:href="@{'/order/add'}"></a>
-</div>
-
+    <div>
+        Итого к оплате - <span th:text="${products.getTotalCost()}"/> руб.
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a th:text="'Оформить заказ'" th:href="@{'/order/add'}"></a>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <form th:action="@{'/order/addAnonimus'}" th:method="POST" style="border: black 1px solid">
+            <fieldset>
+                <legend th:text="'Форма быстрой регистрации'"/>
+                <label th:for="'phone'" th:text="'Номер телефона'"/>
+                <input th:name="'phone'" type="tel" placeholder="Введите номер телефона">
+                <button type="submit" th:text="'Оформить заказ'"/>
+            </fieldset>
+        </form>
+    </div>
+</th:block>
+<h1 th:if="${products.getOrderDetails().size() == 0}" th:text="'Ваша корзина пуста.'"/>
+<h1 th:if="${not #strings.isEmpty(cartSuccesOrder)}" th:text="'Заказ сформирован и направлен в работу. Спасибо за Ваш выбор.'"/>
 </body>
 </html>

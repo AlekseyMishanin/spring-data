@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -19,14 +20,18 @@ public class OrderDetails {
     @Column(name = "count")
     private Integer count;
 
-    @Column(name = "total_cost")
-    private Integer totalCost;
+    @Column(name = "product_cost")
+    private BigDecimal productCost;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_product")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_order")
     private Order order;
+
+    public double getGroupPrice(){
+        return productCost.multiply(BigDecimal.valueOf(count)).doubleValue();
+    }
 }

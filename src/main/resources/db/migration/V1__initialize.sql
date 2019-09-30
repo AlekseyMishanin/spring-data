@@ -34,7 +34,8 @@ VALUES
 
 INSERT INTO users (username, password, first_name, last_name, email,phone)
 VALUES
-('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','admin@gmail.com','+79881111111');
+('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','admin@gmail.com','+79881111111'),
+('anon','$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.','anon','anon','anon@gmail.com','+71111111111');;
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
@@ -57,18 +58,19 @@ INSERT INTO products (title, price) VALUES
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
   id bigserial,
-  id_user bigserial not null,
+  id_user bigint not null,
   status boolean not null default false,
+  phone bigint,
   PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS orders_details;
 CREATE TABLE orders_details (
   id bigserial,
-  id_order bigserial not null,
-  id_product bigserial not null,
+  id_order bigint not null,
+  id_product bigint not null,
   count integer not null,
-  total_cost integer not null,
+  product_cost numeric(8,2) not null,
   primary key (id),
   FOREIGN KEY (id_order)
   REFERENCES orders (id),

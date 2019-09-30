@@ -37,6 +37,13 @@ public class CartController {
         return "cart";
     }
 
+    @GetMapping("/succes")
+    public String showSucces(Model model){
+        model.addAttribute("products", cart.getProducts());
+        model.addAttribute("cartSuccesOrder", "true");
+        return "cart";
+    }
+
     @GetMapping("/add")
     public void addProduct(@RequestParam("id") Long id,
                              HttpServletRequest request,

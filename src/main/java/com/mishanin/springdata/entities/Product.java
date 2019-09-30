@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -23,5 +24,5 @@ public class Product implements Serializable {
     private String title;
 
     @Column(name = "`price`")
-    private int price;
+    private BigDecimal price;
 }

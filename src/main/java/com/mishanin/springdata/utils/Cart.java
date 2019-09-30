@@ -10,15 +10,15 @@ import javax.annotation.PostConstruct;
 @SessionScope
 public class Cart {
 
-    private GroupProduct pr;
+    private GroupOrderDetails pr;
 
-    public GroupProduct getProducts() {
+    public GroupOrderDetails getProducts() {
         return pr;
     }
 
     @PostConstruct
     public void init(){
-        pr = new GroupProduct();
+        pr = new GroupOrderDetails();
     }
     
     public void addProduct(Product product){
