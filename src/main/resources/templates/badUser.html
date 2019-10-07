@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:title="#{auth.title.invalidtoken}"/>
+</head>
+<body>
+    <th:block th:switch="${infoCode}">
+        <h1 th: th:case="'0'" th:text="#{auth.message.invalidtoken}"/>
+        <h1 th: th:case="'1'" th:text="#{auth.message.expired}"/>
+    </th:block>
+    <a th:href="@{/registration-form.html}" th:text="#{label.form.loginsingup}"></a>
+</body>
+</html>

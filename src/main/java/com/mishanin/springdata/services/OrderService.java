@@ -33,31 +33,31 @@ public class OrderService {
     }
 
     @Transactional
-    public void createOrder(User user){
+    public Order createOrder(User user, Long phone){
         //формируем уникальный заказ
-        Order newOrder = new Order(user);
-        createOrderEnd(newOrder);
+        Order newOrder = new Order(user, phone);
+        return createOrderEnd(newOrder);
     }
 
     @Transactional
-    public void createOrderByAnon(User user, Long phone){
+    public Order createOrderByAnon(User user, Long phone){
         //формируем уникальный заказ
         Order newOrder = new Order(user, phone);
-        createOrderEnd(newOrder);
+        return createOrderEnd(newOrder);
     }
 
-    private void createOrderEnd(Order order){
+    private Order createOrderEnd(Order order){
         //вытягиваем коллекцию товаров из корзины клиента
         GroupOrderDetails groupOrderDetails = cart.getProducts();
         //в цикле перебираем все группы товаров из коллекции
-        if(groupOrderDetails.getOrderDetails().isEmpty()) return;
+        if(groupOrderDetails.getOrderDetails().isEmpty()) return null;
         //добавляем группы товаров в заказ
         groupOrderDetails.getOrderDetails().stream().forEach(a->{
             order.addItem(a.getValue());
             //обновляем сущность продукта
             a.getValue().setProduct(productService.save(a.getValue().getProduct()));
         });
-        orderRepository.save(order);
         cart.clear();
+        return orderRepository.save(order);
     }
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="#{reg.mail.title}"/>
+</head>
+<body>
+<!--<h1 th:text="#{reg.mail.info.send}"></h1>-->
+<!--<br>-->
+<noscript>
+    <div class="alert alert-warning" data-s="warning-javascript">
+        <a href="/console">Twilio Console</a>
+        is designed for javascript enabled browsers. Please enable javascript before proceeding.
+    </div>
+</noscript>
+<div id="content">
+    <div>
+        <div class="container">
+            <div class="alertContainer"></div>
+            <div class="row">
+                <div class="col-md-20 col-md-offset-2">
+                    <div class="row m-b">
+                        <h1>Verify you're a human to start your free trial</h1>
+                        <div id="alert-container"></div>
+                    </div>
+                    <div class="row m-b-xl">
+                        <section class="panel panel-default verification-form-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Verify Email</h4>
+                                <i class="icon icon-2x icon-angle-up verification-form-icon"></i>
+                            </div>
+                            <div class="panel-body">
+                                <div class="email-verification-form">
+                                    <div class="col-md-11">
+                                        <p class="single-space">We sent an email to mishaninaa81@gmail.com</p>
+                                        <p>To continue, please check your email and verify your account.</p>
+                                        <p class="single-space">Didn't receive the email?</p>
+                                        <p><a>Resend Email</a></p>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <img src="data:image/png;base64,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" alt="Sent email">
+                                    </div></div></div></section></div></div></div></div></div></div>
+</body>
+</html>
+
+
+
+

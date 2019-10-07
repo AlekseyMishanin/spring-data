@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+    <th:block th:object="${event}">
+        <div class="container">
+            <h1 th:text="#{reg.mail.hello(${event.user.firstname})}"></h1>
+            <h3 th:text="#{reg.mail.token}"></h3>
+            <a th:href="@{${event.pathUrl} + '/registrationConfirm?token=' + ${event.token}}" th:text="${event.token}"></a>
+            <h5 th:text="#{reg.mail.cancel}"></h5>
+        </div>
+    </th:block>
+</body>
+</html>

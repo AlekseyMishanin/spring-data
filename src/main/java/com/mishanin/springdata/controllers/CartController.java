@@ -37,7 +37,7 @@ public class CartController {
         return "cart";
     }
 
-    @GetMapping("/succes")
+    @GetMapping("/success")
     public String showSucces(Model model){
         model.addAttribute("products", cart.getProducts());
         model.addAttribute("cartSuccesOrder", "true");

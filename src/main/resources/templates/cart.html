@@ -43,7 +43,14 @@
         Итого к оплате - <span th:text="${products.getTotalCost()}"/> руб.
     </div>
     <div sec:authorize="isAuthenticated()">
-        <a th:text="'Оформить заказ'" th:href="@{'/order/add'}"></a>
+        <form th:action="@{'/order/add'}" th:method="POST" style="border: black 1px solid">
+            <fieldset>
+                <legend th:text="'Форма оформления заказа'"/>
+                <label th:for="'phone'" th:text="'Номер телефона'"/>
+                <input th:name="'phone'" type="tel" placeholder="Введите номер телефона">
+                <button type="submit" th:text="'Оформить заказ'"/>
+            </fieldset>
+        </form>
     </div>
     <div sec:authorize="isAnonymous()">
         <form th:action="@{'/order/addAnonimus'}" th:method="POST" style="border: black 1px solid">

@@ -6,7 +6,9 @@ CREATE TABLE users (
   first_name            VARCHAR(50) NOT NULL,
   last_name             VARCHAR(50) NOT NULL,
   email                 VARCHAR(50) NOT NULL,
-  phone                 VARCHAR(15) NOT NULL,
+  phone                 VARCHAR(15) NOT NULL unique,
+  enabled               boolean not null,
+  type_reg              VARCHAR(50) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -30,18 +32,19 @@ CREATE TABLE users_roles (
 
 INSERT INTO roles (name)
 VALUES
-('ROLE_USER'), ('ROLE_MANAGER'), ('ROLE_ADMIN');
+('ROLE_USER'), ('ROLE_MANAGER'), ('ROLE_ADMIN'), ('ROLE_CUSTOMER');
 
-INSERT INTO users (username, password, first_name, last_name, email,phone)
+INSERT INTO users (username, password, first_name, last_name, email,phone, enabled, type_reg)
 VALUES
-('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','admin@gmail.com','+79881111111'),
-('anon','$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.','anon','anon','anon@gmail.com','+71111111111');;
+('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','mishanin_a_a@mail.ru','+79263545028', 'true', 'FULL'),
+('anon','$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.','anon','anon','mishanin_a_a@mail.ru','+71111111111', 'true', 'FULL');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
 (1, 1),
 (1, 2),
-(1, 3);
+(1, 3),
+(1, 4);
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
@@ -59,7 +62,9 @@ DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
   id bigserial,
   id_user bigint not null,
-  status boolean not null default false,
+  status varchar(255) not null,
+  created_at timestamp,
+  updated_at timestamp,
   phone bigint,
   PRIMARY KEY (id)
 );
@@ -76,4 +81,15 @@ CREATE TABLE orders_details (
   REFERENCES orders (id),
   FOREIGN KEY (id_product)
   REFERENCES products (id)
+);
+
+DROP TABLE IF EXISTS verification_tokens;
+CREATE TABLE verification_tokens (
+  id bigserial,
+  token varchar(255) not null,
+  user_id bigint not null,
+  date_create timestamp,
+  primary key (id),
+  FOREIGN KEY (user_id)
+  REFERENCES users (id)
 );

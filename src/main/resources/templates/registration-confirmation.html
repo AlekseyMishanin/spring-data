@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{reg.mail.title}"></title>
+</head>
+<body>
+    <h1 th:text="#{reg.mail.success}"></h1>
+    <br>
+    <a th:href="@{/login}" th:text="#{reg.mail.link.login}"></a>
+</body>
+</html>
