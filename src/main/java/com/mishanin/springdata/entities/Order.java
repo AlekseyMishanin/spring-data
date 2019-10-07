@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,10 +21,31 @@ public class Order {
     @Column(name = "status")
     private Boolean status;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private User user;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private Collection<OrderDetails> orderDetails;
+    @Column(name = "phone")
+    private Long phone;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
+
+    public Order(User user){
+        this.user = user;
+        orderDetails = new ArrayList<>();
+        status = false;
+    }
+
+    public Order(User user, Long phone){
+        this.user = user;
+        orderDetails = new ArrayList<>();
+        status = false;
+        this.phone = phone;
+    }
+
+    public void addItem(OrderDetails item){
+        orderDetails.add(item);
+        item.setOrder(this);
+    }
 }
