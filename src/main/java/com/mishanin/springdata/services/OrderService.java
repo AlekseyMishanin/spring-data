@@ -46,7 +46,7 @@ public class OrderService {
         return createOrderEnd(newOrder);
     }
 
-    private Order createOrderEnd(Order order){
+    private synchronized Order createOrderEnd(Order order){
         //вытягиваем коллекцию товаров из корзины клиента
         GroupOrderDetails groupOrderDetails = cart.getProducts();
         //в цикле перебираем все группы товаров из коллекции

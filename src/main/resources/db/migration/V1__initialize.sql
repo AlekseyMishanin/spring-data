@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id                    bigserial,
-  username              varchar(50) NOT NULL,
   password              varchar(80) NOT NULL,
   first_name            VARCHAR(50) NOT NULL,
   last_name             VARCHAR(50) NOT NULL,
@@ -34,10 +33,10 @@ INSERT INTO roles (name)
 VALUES
 ('ROLE_USER'), ('ROLE_MANAGER'), ('ROLE_ADMIN'), ('ROLE_CUSTOMER');
 
-INSERT INTO users (username, password, first_name, last_name, email,phone, enabled, type_reg)
+INSERT INTO users (password, first_name, last_name, email,phone, enabled, type_reg)
 VALUES
-('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','mishanin_a_a@mail.ru','+79263545028', 'true', 'FULL'),
-('anon','$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.','anon','anon','mishanin_a_a@mail.ru','+71111111111', 'true', 'FULL');
+('$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','mishanin_a_a@mail.ru','+79263545028', 'true', 'FULL'),
+('$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.','anon','anon','mishanin_a_a@mail.ru','+71111111111', 'true', 'FULL');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
@@ -46,17 +45,32 @@ VALUES
 (1, 3),
 (1, 4);
 
+DROP TABLE IF EXISTS products_group;
+CREATE TABLE products_group (
+    id bigserial,
+    title varchar(255),
+    PRIMARY KEY (id)
+);
+
+INSERT INTO products_group (title) VALUES
+('Food'),
+('Instruments');
+
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     id bigserial,
     title varchar(255),
     price int,
+    product_group_id bigint,
+    foreign key (product_group_id)
+    references products_group(id),
     PRIMARY KEY (id)
 );
-INSERT INTO products (title, price) VALUES
-('Cheese', 320),
-('Milk', 90),
-('Apples', 120);
+INSERT INTO products (title, price, product_group_id) VALUES
+('Cheese', 320, 1),
+('Milk', 90, 1),
+('Apples', 120, 1),
+('Hammer', 200, 2);
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
@@ -93,3 +107,17 @@ CREATE TABLE verification_tokens (
   FOREIGN KEY (user_id)
   REFERENCES users (id)
 );
+
+DROP TABLE IF EXISTS products_images;
+CREATE TABLE products_images (
+    id bigserial PRIMARY KEY,
+    product_id bigint not null,
+    path varchar(255),
+    foreign key (product_id)
+    references products(id)
+);
+INSERT INTO products_images (product_id, path) VALUES
+(1, 'img_1.jpg'),
+(2, 'img_1.jpg'),
+(3, 'img_1.jpg'),
+(4, 'img_1.jpg');

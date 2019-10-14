@@ -18,9 +18,6 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "password")
     private String password;
 
@@ -56,8 +53,7 @@ public class User {
         this.enabled = false;
     }
 
-    public User(String username, String password, String firstname, String lastname, String email, String phone) {
-        this.username = username;
+    public User(String password, String firstname, String lastname, String email, String phone) {
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -65,8 +61,7 @@ public class User {
         this.phone = phone;
     }
 
-    public User(String username, String password, String firstname, String lastname, String email, String phone, Collection<Role> roles, TypeRegistration typeRegistration, boolean enabled) {
-        this.username = username;
+    public User(String password, String firstname, String lastname, String email, String phone, Collection<Role> roles, TypeRegistration typeRegistration, boolean enabled) {
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;

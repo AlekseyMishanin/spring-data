@@ -1,7 +1,6 @@
 package com.mishanin.springdata.configs;
 
 import com.mishanin.springdata.services.UserService;
-import com.mishanin.springdata.utils.enums.TypeRegistration;
 import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/products/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/users/**").hasRole("ADMIN")
-                .antMatchers("/products/**").hasRole("ADMIN")
+                .antMatchers("/products/**").permitAll()
                 .antMatchers("/shop/order/**").authenticated()
                 .antMatchers("/profile/**").authenticated()
                 .and()

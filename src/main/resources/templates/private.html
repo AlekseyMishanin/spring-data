@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div th:replace="~{navigation :: navigation('null')}"/>
+    <h1 th:text="${session.firstName}"></h1>
+    <h6 th:text="${session.phone}"></h6>
+    <p th:text="#{profile.order.caption}"></p>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{profile.order.number}"/>
+            <th scope="col" th:text="#{profile.order.status}"/>
+            <th scope="col" th:text="#{profile.order.phone}"/>
+            <th scope="col" th:text="#{profile.order.date}"/>
+            <th scope="col" th:text="#{profile.order.list}"/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <th:block th:object="${order}">
+                <td>
+                    <a th:text="*{id}" th:href="@{'/profile/details/' + *{id}}"/>
+                </td>
+                <td th:text="*{status}"/>
+                <td th:text="*{phone}"/>
+                <td th:text="*{craetedAt}"/>
+                <td>
+                    <ul>
+                        <li th:each="o : *{orderDetails}" th:text="${o.product.title}"></li>
+                    </ul>
+                </td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

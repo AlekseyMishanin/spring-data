@@ -6,7 +6,6 @@ import com.mishanin.springdata.utils.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-    User findByUserName(String username);
     User save(UserDTO userDTO);
     User save(User user);
     User getUser(String verificationToken);

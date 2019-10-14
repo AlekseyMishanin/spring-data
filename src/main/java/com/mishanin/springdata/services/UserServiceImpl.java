@@ -58,12 +58,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public User findByUserName(String username) {
-        return userRepository.findOneByUsername(username);
-    }
-
-    @Override
     public User getUser(String verificationToken) {
         User user = tokenRepository.findByToken(verificationToken).getUser();
         return user;
@@ -89,12 +83,12 @@ public class UserServiceImpl implements UserService {
         final boolean credentialsNonExpired = true;
         final boolean accountNonLocked = true;
 
-        User user = userRepository.findOneByUsername(userName);
+        User user = userRepository.findOneByPhone(userName);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getPhone(),
                 user.getPassword(),
                 user.isEnabled(),
                 accountNonExpired,
@@ -111,10 +105,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User save(@NotNull final UserDTO systemUser) {
         User user = new User();
-        if (findByUserName(systemUser.getUserName()) != null) {
-            throw new RuntimeException("User with username " + systemUser.getUserName() + " is already exist");
+        if (findByPhone(systemUser.getPhone()) != null) {
+            throw new RuntimeException("User with phone " + systemUser.getPhone() + " is already exist");
         }
-        user.setUsername(systemUser.getUserName());
         user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         user.setFirstname(systemUser.getFirstName());
         user.setLastname(systemUser.getLastName());
@@ -133,7 +126,6 @@ public class UserServiceImpl implements UserService {
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setTypereg(TypeRegistration.FULL.toString());
-        user.setUsername(userDTO.getUserName());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
@@ -146,7 +138,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User saveAnonimus(@NotNull final String phone){
         return userRepository.save(new User(
-                ANON,
                 ANON,
                 ANON,
                 ANON,
