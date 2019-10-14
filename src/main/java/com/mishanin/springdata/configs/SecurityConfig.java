@@ -1,9 +1,13 @@
 package com.mishanin.springdata.configs;
 
 import com.mishanin.springdata.services.UserService;
+import com.mishanin.springdata.utils.enums.TypeRegistration;
+import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,8 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
+@PropertySource("classpath:private.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
+    @Value("${twilio.sid}") private String twilio_sid;
+    @Value("${twilio.token}") private String twilio_token;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -30,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        Twilio.init(twilio_sid, twilio_token);
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/products/**").hasAnyRole("ADMIN", "MANAGER")
