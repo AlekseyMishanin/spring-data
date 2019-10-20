@@ -72,6 +72,16 @@ INSERT INTO products (title, price, product_group_id) VALUES
 ('Apples', 120, 1),
 ('Hammer', 200, 2);
 
+DROP TABLE IF EXISTS payment_type;
+CREATE TABLE payment_type (
+    id bigserial PRIMARY KEY,
+    title varchar(255)
+);
+INSERT INTO payment_type (title) VALUES
+('Наличными курьеру'),
+('Банковской картой'),
+('PayPal');
+
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
   id bigserial,
@@ -80,6 +90,9 @@ CREATE TABLE orders (
   created_at timestamp,
   updated_at timestamp,
   phone bigint,
+  payment_type_id bigint not null,
+  FOREIGN KEY (payment_type_id)
+  REFERENCES payment_type(id),
   PRIMARY KEY (id)
 );
 
@@ -121,3 +134,4 @@ INSERT INTO products_images (product_id, path) VALUES
 (2, 'img_1.jpg'),
 (3, 'img_1.jpg'),
 (4, 'img_1.jpg');
+

@@ -37,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         Twilio.init(twilio_sid, twilio_token);
-        http.authorizeRequests()
+        http.csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/products/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/users/**").hasRole("ADMIN")
@@ -52,7 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutSuccessUrl("/shop")
-                .permitAll();
+                .permitAll()
+                .deleteCookies("JSESSIONID")
+                .and()
+                .rememberMe().key("uniqueAndSecret")
+                .tokenValiditySeconds(86400);
+
     }
 
     @Bean

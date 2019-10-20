@@ -17,7 +17,7 @@ import java.util.List;
 public class Order {
 
     public enum Status{
-        CREATED, SEND, RECEIVED, CENCELED
+        CREATED, PAID, SEND, RECEIVED, CENCELED
     }
 
     @Id
@@ -47,17 +47,20 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;
 
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_type_id")
+    private PaymentType paymentType;
+
     public Order(User user){
         this.user = user;
         orderDetails = new ArrayList<>();
         status = Status.CREATED;
     }
 
-    public Order(User user, Long phone){
-        this.user = user;
-        orderDetails = new ArrayList<>();
-        status = Status.CREATED;
+    public Order(User user, Long phone, PaymentType paymentType){
+        this(user);
         this.phone = phone;
+        this.paymentType = paymentType;
     }
 
     public void addItem(OrderDetails item){
@@ -67,5 +70,12 @@ public class Order {
 
     public double getTotalPrice(){
         return orderDetails.stream().map(a->new Double(a.getGroupPrice())).reduce((a,b)->a+b).get();
+    }
+
+    public String itemsNameConvertListToString(){
+        StringBuilder str = new StringBuilder();
+        orderDetails.forEach(item->str.append(item.getProduct().getTitle()).append(", "));
+        str.delete(str.lastIndexOf(", "),str.length());
+        return str.toString();
     }
 }

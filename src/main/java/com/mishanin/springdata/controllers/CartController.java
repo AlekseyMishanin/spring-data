@@ -1,6 +1,7 @@
 package com.mishanin.springdata.controllers;
 
 import com.mishanin.springdata.entities.Product;
+import com.mishanin.springdata.services.PaymentTypeService;
 import com.mishanin.springdata.services.ProductService;
 import com.mishanin.springdata.utils.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class CartController {
 
     private ProductService productService;
+    private PaymentTypeService paymentTypeService;
     private Cart cart;
 
     @Autowired
@@ -31,9 +33,15 @@ public class CartController {
         this.cart = cart;
     }
 
+    @Autowired
+    public void setPaymentTypeService(PaymentTypeService paymentTypeService) {
+        this.paymentTypeService = paymentTypeService;
+    }
+
     @GetMapping("")
     public String show(Model model){
         model.addAttribute("products", cart.getProducts());
+        model.addAttribute("paymentTypeList", paymentTypeService.findAll());
         return "cart";
     }
 
