@@ -10,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -117,9 +116,7 @@ public class PayPalController {
 
             if(executePayment.getState().equals("approved")){
                 String idOrder = (String) session.getAttribute("idOrder");
-                Order order = orderService.findById(Long.valueOf(idOrder));
-                order.setStatus(Order.Status.PAID);
-                orderService.save(order);
+                orderService.setStatusPaidById(idOrder);
                 model.addAttribute("message", "Ваш заказ сформирован");
             } else {
                 model.addAttribute("message", "Что-то пошло не так при формировании заказа, повторите");

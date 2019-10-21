@@ -65,4 +65,10 @@ public class OrderService {
     public void save(Order order){ orderRepository.save(order);}
 
     public Order findById(Long id){return orderRepository.findById(id).get();}
+
+    public void setStatusPaidById(String id){
+        Order order = findById(Long.valueOf(id));
+        order.setStatus(Order.Status.PAID);
+        save(order);
+    }
 }
