@@ -16,10 +16,6 @@ import javax.validation.constraints.Size;
 @FieldMatch(first = "password", second = "matchingPassword", message = "The password field must match")
 public class UserDTO {
 
-    @NotNull(message = "not null check")
-    @Size(min = 3, message = "username length must be greated than 2 symbols")
-    private String userName;
-
     @NotNull(message = "must be not null")
     @Size(min = 4, message = "is required")
     @ValidPassword

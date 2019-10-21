@@ -37,3 +37,27 @@
 .buttonsBox button {
     margin: 15px;
 }
+
+.watch_container {
+    border: burlywood 1em solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.watch_container .item_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.watch_container .item_container .item_box {
+    display: flex;
+    align-items: center;
+    border-style: dashed;
+    margin: 1em;
+    padding: 2em;
+    max-height: 30px;
+    max-width: 150px;
+}

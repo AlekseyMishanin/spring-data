@@ -31,7 +31,8 @@ public class ShopController {
                               @RequestParam(name = "min", required = false) Integer min,
                               @RequestParam(name = "max", required = false) Integer max,
                               @RequestParam(name = "pageCurrent", required = false) Integer pageCurrent,
-                              @RequestParam(name = "sizePage", required = false) Integer sizePage
+                              @RequestParam(name = "sizePage", required = false) Integer sizePage,
+                              @RequestParam(name = "product_group", required = false) String idProductGroup
     ){
 
         if(sp == null){
@@ -44,7 +45,8 @@ public class ShopController {
                 min,
                 max,
                 pageCurrent,
-                sizePage);
+                sizePage,
+                idProductGroup);
         model.addAttribute("filters", filters);
         return "shop";
     }

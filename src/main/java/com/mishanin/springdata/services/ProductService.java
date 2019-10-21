@@ -61,7 +61,8 @@ public class ProductService {
                             Integer min,
                             Integer max,
                             Integer pageCurrent,
-                            Integer sizePage){
+                            Integer sizePage,
+                           String idProductGroup){
         Specification<Product> spec = Specification.where(null);
         if(word != null) {
             filters.setWord(word);
@@ -81,6 +82,12 @@ public class ProductService {
         }
         if(filters.getMax() != null){
             spec = spec.and(ProductSpecifications.priceLesserThanOrEq(Integer.valueOf(filters.getMax())));
+        }
+        if(idProductGroup != null){
+            filters.setProductGroupId(idProductGroup);
+        }
+        if(filters.getProductGroupById() != null){
+            spec = spec.and(ProductSpecifications.productGroupEq(filters.getProductGroupById()));
         }
         if(filters.getPageCurrent()==null && pageCurrent == null) { pageCurrent = 1; }
         if(filters.getSizePage()==null && sizePage == null) { sizePage = 2; }

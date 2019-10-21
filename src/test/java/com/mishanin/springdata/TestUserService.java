@@ -26,17 +26,17 @@ public class TestUserService extends Assert {
     @Test
     public void testFindByUserName(){
 
-        Mockito.doReturn(new User("anon",
+        Mockito.doReturn(new User(
                 "$2a$10$LrQ5VVqf1M293xzqI3mH8.dtTTnHLGoZ.xgOBZtF4u7WsJ4TY3tw.",
                 "anon",
                 "anon",
                 "anon@gmail.com",
                 "+71111111111"))
                 .when(userRepository)
-                .findOneByUsername("anon");
-        User user = userService.findByUserName("anon");
+                .findOneByPhone("+71111111111");
+        User user = userService.findByPhone("+71111111111");
         assertTrue(user != null);
-        Mockito.verify(userRepository, Mockito.times(1)).findOneByUsername(ArgumentMatchers.eq("anon"));
-        Mockito.verify(userRepository,Mockito.times(1)).findOneByUsername(ArgumentMatchers.any(String.class));
+        Mockito.verify(userRepository, Mockito.times(1)).findOneByPhone(ArgumentMatchers.eq("71111111111"));
+        Mockito.verify(userRepository,Mockito.times(1)).findOneByPhone(ArgumentMatchers.any(String.class));
     }
 }

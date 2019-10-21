@@ -1,6 +1,7 @@
 package com.mishanin.springdata.repositories.specifications;
 
 import com.mishanin.springdata.entities.Product;
+import com.mishanin.springdata.entities.ProductGroup;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ProductSpecifications {
@@ -18,6 +19,12 @@ public class ProductSpecifications {
     public static Specification<Product> priceLesserThanOrEq(double value) {
         return (Specification<Product>) (root, criteriaQuery, criteriaBuilder) -> {
             return criteriaBuilder.lessThanOrEqualTo(root.get("price"), value);
+        };
+    }
+
+    public static Specification<Product> productGroupEq(ProductGroup productGroup){
+        return (Specification<Product>)(root, criteriaQuery, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("productGroup"), productGroup);
         };
     }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div th:replace="~{navigation :: navigation('null')}"/>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{history.order.title}"/>
+            <th scope="col" th:text="#{history.order.cost}"/>
+            <th scope="col" th:text="#{history.order.count}"/>
+            <th scope="col" th:text="#{history.order.groupcost}"/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderDetails}">
+            <th:block th:object="${order}">
+                <td th:text="*{product.title}"/>
+                <td th:text="*{productCost}"/>
+                <td th:text="*{count}"/>
+                <td th:text="*{groupPrice}"/>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:text="#{history.button.back}" th:href="@{/profile}"/>
+
+</body>
+</html>

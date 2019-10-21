@@ -48,9 +48,9 @@ public class OdrerController {
     @PostMapping("/add")
     public String addOrder(@RequestParam(name = "phone") Long phone){
         //вытягиваем имя пользователя из Spring Security
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String userphone = SecurityContextHolder.getContext().getAuthentication().getName();
         //вытягиваем пользователя из БД по имени пользователя из Spring Security
-        User user = userService.findByUserName(username);
+        User user = userService.findByPhone(userphone);
         Order order = orderService.createOrder(user, phone);
         executorService.execute(()->{
             Message message = Message.creator(new PhoneNumber('+' + Long.toString(phone)),

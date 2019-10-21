@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -16,8 +16,11 @@
         <div th:replace="~{navigation :: navigation('Home')}"/>
 
         <br>
-        <h1>App</h1>
-        Hello, User!!!
+        <h1>Main</h1>
+        Hello,
+        <span sec:authorize="isAuthenticated()" th:text="${name}"></span>
+        <span sec:authorize="isAnonymous()" th:text="'anon'"></span>
+        !!!
     </div>
 </body>
 </html>

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>List products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
@@ -27,7 +25,9 @@
         <tr th:each="prod : ${filters.getPageProduct().getContent()}">
             <th:block th:object="${prod}">
                 <th scope="row" th:text="*{id}"/>
-                <td th:text="${#object.title}"/>
+                <td>
+                    <a th:text="${#object.title}" th:href="@{'/products/show/' + ${#object.id}}"/>
+                </td>
                 <td th:text="*{price}"/>
                 <td>
                     <a th:text="#{caption.cart.add.product}" th:href="@{'/cart/add?id=' + ${#object.id}}"/>
@@ -39,5 +39,6 @@
 
 <div th:insert="~{pagination :: pagination}"></div>
 <div th:insert="~{filter-form :: filter-form('shop')}"></div>
+<div th:insert="~{watch-list :: watchList}"></div>
 </body>
 </html>
