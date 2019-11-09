@@ -20,7 +20,7 @@ public class ProductRestController {
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<Product> getAllProduct(){
-        return productService.findAll().get();
+        return productService.findAll();
     }
 
     @GetMapping(value = {"/{id}"})

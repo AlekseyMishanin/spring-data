@@ -45,10 +45,22 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+		<!--Test-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+			<version>1.4.194</version>
 		</dependency>
 
 		<dependency>
@@ -122,7 +134,7 @@
 						<schema>september_market</schema>
 					</schemas>
                     <user>postgres</user>
-					<password>Vjcrdf3332!</password>
+					<password>postgres</password>
 				</configuration>
 			</plugin>
 			<plugin>
