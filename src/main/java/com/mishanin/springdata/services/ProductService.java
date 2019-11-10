@@ -34,8 +34,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<List<Product>> findAll(){
-        return Optional.of(productRepository.findAll());
+    public List<Product> findAll(){
+        return productRepository.findAll();
     }
 
     @Transactional(readOnly = true)

@@ -17,14 +17,14 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 3059323039068959973L;
 
     @Id
-    @Column(name = "`id`")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "`title`", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "`price`")
+    @Column(name = "price")
     private BigDecimal price;
 
     @OneToMany(mappedBy = "product")
@@ -34,4 +34,9 @@ public class Product implements Serializable {
     @JoinColumn(name = "product_group_id")
     private ProductGroup productGroup;
 
+    public Product(Long id, String title, BigDecimal price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
 }
