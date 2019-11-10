@@ -42,26 +42,38 @@
     <div>
         Итого к оплате - <span th:text="${products.getTotalCost()}"/> руб.
     </div>
-    <div sec:authorize="isAuthenticated()">
+<!--    <div sec:authorize="isAuthenticated()">-->
         <form th:action="@{'/order/add'}" th:method="POST" style="border: black 1px solid">
             <fieldset>
                 <legend th:text="#{cart.form.order.label}"/>
                 <label th:for="'phone'" th:text="#{cart.form.phone}"/>
                 <input th:name="'phone'" type="tel" th:placeholder="#{cart.form.placeholder.phone}">
+                <select name="paymentTypeName" th:object="${paymentTypeList}">
+                    <option th:each="ptl : ${paymentTypeList}"
+                            th:value="${ptl.id}"
+                            th:text="${ptl.title}">
+                    </option>
+                </select>
                 <button type="submit" th:text="#{cart.button.bye}"/>
             </fieldset>
         </form>
-    </div>
-    <div sec:authorize="isAnonymous()">
-        <form th:action="@{'/order/addAnonimus'}" th:method="POST" style="border: black 1px solid">
-            <fieldset>
-                <legend th:text="#{cart.form.order.label}"/>
-                <label th:for="'phone'" th:text="#{cart.form.phone}"/>
-                <input th:name="'phone'" type="tel" th:placeholder="#{cart.form.placeholder.phone}">
-                <button type="submit" th:text="#{cart.button.bye}"/>
-            </fieldset>
-        </form>
-    </div>
+<!--    </div>-->
+<!--    <div sec:authorize="isAnonymous()">-->
+<!--        <form th:action="@{'/order/add'}" th:method="POST" style="border: black 1px solid">-->
+<!--            <fieldset>-->
+<!--                <legend th:text="#{cart.form.order.label}"/>-->
+<!--                <label th:for="'phone'" th:text="#{cart.form.phone}"/>-->
+<!--                <input th:name="'phone'" type="tel" th:placeholder="#{cart.form.placeholder.phone}">-->
+<!--                <select name="paymentTypeName" th:object="${paymentTypeList}">-->
+<!--                    <option th:each="ptl : ${paymentTypeList}"-->
+<!--                            th:value="${ptl.id}"-->
+<!--                            th:text="${ptl.title}">-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--                <button type="submit" th:text="#{cart.button.bye}"/>-->
+<!--            </fieldset>-->
+<!--        </form>-->
+<!--    </div>-->
 </th:block>
 <h1 th:if="${products.getOrderDetails().size() == 0 and #strings.isEmpty(cartSuccesOrder)}" th:text="#{cart.empty}"/>
 <h1 th:if="${not #strings.isEmpty(cartSuccesOrder)}" th:text="#{cart.order.accepted}"/>

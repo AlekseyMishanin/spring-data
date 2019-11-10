@@ -2,6 +2,7 @@ package com.mishanin.springdata.services;
 
 import com.mishanin.springdata.entities.Order;
 import com.mishanin.springdata.entities.OrderDetails;
+import com.mishanin.springdata.entities.PaymentType;
 import com.mishanin.springdata.entities.User;
 import com.mishanin.springdata.repositories.OrderRepository;
 import com.mishanin.springdata.utils.Cart;
@@ -33,18 +34,18 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createOrder(User user, Long phone){
+    public Order createOrder(User user, Long phone, PaymentType paymentType){
         //формируем уникальный заказ
-        Order newOrder = new Order(user, phone);
+        Order newOrder = new Order(user, phone, paymentType);
         return createOrderEnd(newOrder);
     }
 
-    @Transactional
-    public Order createOrderByAnon(User user, Long phone){
-        //формируем уникальный заказ
-        Order newOrder = new Order(user, phone);
-        return createOrderEnd(newOrder);
-    }
+//    @Transactional
+//    public Order createOrderByAnon(User user, Long phone){
+//        //формируем уникальный заказ
+//        Order newOrder = new Order(user, phone);
+//        return createOrderEnd(newOrder);
+//    }
 
     private synchronized Order createOrderEnd(Order order){
         //вытягиваем коллекцию товаров из корзины клиента
@@ -59,5 +60,15 @@ public class OrderService {
         });
         cart.clear();
         return orderRepository.save(order);
+    }
+
+    public void save(Order order){ orderRepository.save(order);}
+
+    public Order findById(Long id){return orderRepository.findById(id).get();}
+
+    public void setStatusPaidById(String id){
+        Order order = findById(Long.valueOf(id));
+        order.setStatus(Order.Status.PAID);
+        save(order);
     }
 }
